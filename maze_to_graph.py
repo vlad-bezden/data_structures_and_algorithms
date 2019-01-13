@@ -47,23 +47,42 @@ def maze_to_graph(maze: Maze) -> Graph:
     return graph
 
 
+def bfs_search(graph, start, end):
+    from collections import deque
+    visited = set()
+    queue = deque([("", start)])
+
+    while queue:
+        path, current = queue.popleft()
+        if current == end:
+            return path
+        if current in visited:
+            continue
+        visited.add(current)
+        for direction, neightbor in graph[current]:
+            queue.append((path + direction, neightbor))
+    return "NOT FOUND!"
+
 if __name__ == "__main__":
     maze = [[0, 0, 1], [1, 0, 1], [1, 0, 0]]
     graph = maze_to_graph(maze)
     print("\n", graph)
 
     maze = [
-        [1, 0, 1, 1, 1, 1, 0, 1, 1, 1],
+        [0, 0, 1, 1, 1, 1, 0, 1, 1, 1],
         [1, 0, 1, 0, 1, 1, 1, 0, 1, 1],
-        [1, 1, 1, 0, 1, 1, 0, 1, 0, 1],
-        [1, 0, 0, 0, 1, 0, 0, 0, 0, 1],
-        [1, 1, 1, 0, 1, 1, 1, 0, 1, 0],
+        [1, 0, 1, 0, 0, 0, 0, 1, 0, 1],
+        [1, 0, 0, 0, 1, 0, 0, 0, 0, 0],
+        [1, 0, 1, 0, 1, 1, 1, 0, 1, 0],
         [1, 0, 1, 1, 1, 1, 0, 1, 0, 0],
         [1, 0, 0, 0, 0, 0, 1, 0, 0, 1],
-        [1, 0, 1, 1, 1, 1, 1, 1, 1, 1],
+        [1, 0, 1, 1, 0, 1, 1, 0, 1, 1],
         [1, 1, 1, 0, 0, 0, 1, 0, 0, 1],
         [1, 1, 1, 0, 0, 0, 1, 0, 0, 1],
         [1, 1, 1, 0, 0, 0, 1, 0, 0, 1],
-        [1, 1, 1, 0, 0, 0, 1, 0, 0, 0],
+        [1, 1, 1, 0, 0, 0, 0, 0, 0, 0],
     ]
     graph = maze_to_graph(maze)
+
+    result = bfs_search(graph, Point(0, 0), Point(len(maze) - 1, len(maze[0]) - 1))
+    print(result)
