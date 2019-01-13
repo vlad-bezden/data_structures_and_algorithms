@@ -1,12 +1,10 @@
 """
-You get an input as list of list List<List<Int>>
-The input can have values 0,1 and only one valuse is 9.
-Robot always starts from top left cornet of the matrix
-can move on 1 only, not on 0
-most left corner with coordinates 0,0 always has 1
+You get an input as list of list List[List[Int]]
+The input can have values 0, 1 and only one valuse is 7.
+You always starts from top left cornet of the matrix and you can move on 1 only, not on 0
+Most left corner with coordinates 0,0 always has 1
 
-Find minimum number of stept from left top cornet to the 9
-you have 45 min to solve it
+Find minimum number of stept from left top cornet to the number 7
 """
 
 from typing import List
@@ -25,7 +23,7 @@ MOVES = [
     ("W", Point(0, -1)),
 ]
 START = Point(0, 0)
-FINAL_VALUE = 9
+FINAL_VALUE = 7
 
 
 def is_inside(point: Point, width: int, height: int) -> bool:
