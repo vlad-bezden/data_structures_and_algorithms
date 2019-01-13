@@ -1,4 +1,4 @@
-"""Example of quick sort using recurstion"""
+"""Example of quick sort using recursion"""
 
 import random
 from typing import List
