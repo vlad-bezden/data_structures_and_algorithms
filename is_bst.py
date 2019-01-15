@@ -31,10 +31,12 @@ if __name__ == "__main__":
     node40 = Node(40, None, None)
     node10 = Node(10, None, None)
 
+    # balanced tree
     node30 = Node(30, node25, node40)
     root = Node(20, node10, node30)
     print(is_bst(root, MIN_KEY, MAX_KEY))
 
+    # not-balanced tree
     node30 = Node(30, node5, node40)
     root = Node(20, node10, node30)
     print(is_bst(root, MIN_KEY, MAX_KEY))
