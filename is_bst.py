@@ -15,7 +15,7 @@ class Node:
     right: Node
 
     @property
-    def is_leaf(self):
+    def is_leaf(self) -> bool:
         return not self.left and not self.right
 
 
