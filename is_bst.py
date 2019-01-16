@@ -4,8 +4,8 @@ from __future__ import annotations
 import sys
 from dataclasses import dataclass
 
-MAX_KEY = sys.maxsize
-MIN_KEY = -sys.maxsize - 1
+MAX_VALUE = sys.maxsize
+MIN_VALUE = -sys.maxsize - 1
 
 
 @dataclass
@@ -15,8 +15,7 @@ class Node:
     right: Node
 
     @property
-    def is_leaf(self) -> bool:
-        """Check if node is a leaf"""
+    def is_leaf(self):
         return not self.left and not self.right
 
 
@@ -40,9 +39,9 @@ if __name__ == "__main__":
     # balanced tree
     node30 = Node(30, node25, node40)
     root = Node(20, node10, node30)
-    print(is_bst(root, MIN_KEY, MAX_KEY))
+    print(is_bst(root, MIN_VALUE, MAX_VALUE))
 
     # unbalanced tree
     node30 = Node(30, node5, node40)
     root = Node(20, node10, node30)
-    print(is_bst(root, MIN_KEY, MAX_KEY))
+    print(is_bst(root, MIN_VALUE, MAX_VALUE))
