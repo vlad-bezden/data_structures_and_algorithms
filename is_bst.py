@@ -1,27 +1,33 @@
-"""Check if Binary Search Tree (BST) is balanced"""
+"""Checks if Binary Search Tree (BST) is balanced"""
 
+from __future__ import annotations
 import sys
-from collections import namedtuple
+from dataclasses import dataclass
 
 MAX_KEY = sys.maxsize
 MIN_KEY = -sys.maxsize - 1
 
-Node = namedtuple("Node", ["value", "left", "right"])
+
+@dataclass
+class Node:
+    value: int
+    left: Node
+    right: Node
+
+    @property
+    def is_leaf(self) -> bool:
+        """Check if node is a leaf"""
+        return not self.left and not self.right
 
 
-def is_root(node: Node) -> bool:
-    """Returns True if node has at least one child"""
-    return node.left or node.right
-
-
-def is_bst(root: Node, min_value: int, max_value: int) -> bool:
-    if root.value < min_value or max_value < root.value:
+def is_bst(node: Node, min_value: int, max_value: int) -> bool:
+    if node.value < min_value or max_value < node.value:
         return False
-    elif not is_root(root):
+    elif node.is_leaf:
         return True
 
-    return is_bst(root.left, min_value, root.value) and is_bst(
-        root.right, root.value, max_value
+    return is_bst(node.left, min_value, node.value) and is_bst(
+        node.right, node.value, max_value
     )
 
 
@@ -36,7 +42,7 @@ if __name__ == "__main__":
     root = Node(20, node10, node30)
     print(is_bst(root, MIN_KEY, MAX_KEY))
 
-    # not-balanced tree
+    # unbalanced tree
     node30 = Node(30, node5, node40)
     root = Node(20, node10, node30)
     print(is_bst(root, MIN_KEY, MAX_KEY))
