@@ -1,5 +1,5 @@
 """
-In-order traversal of bynary tree
+In-order traversal of binary tree
 
               A
              / \
