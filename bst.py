@@ -59,6 +59,15 @@ class Tree:
             current = current.right
         return current
 
+    def find(self, value: int) -> Node:
+        """Finds node by value."""
+        current = self.root
+        while current:
+            if current.value == value:
+                return current
+            current = current.left if value < current.value else current.right
+        return current
+
     def in_order(self, node: Node) -> Node:
         """
         Process left sub tree
@@ -92,6 +101,7 @@ class Tree:
 if __name__ == "__main__":
     MAX_VAL = 10 ** 3
     NODES = 20
+    random.seed(42)
     root_value = random.randint(0, MAX_VAL)
     tree = Tree(Node(root_value))
     for i in random.sample(range(MAX_VAL), NODES):
@@ -105,3 +115,11 @@ if __name__ == "__main__":
 
     for node in tree:
         print(node.value)
+
+    # this value is not part of the tree
+    node = tree.find(256)
+    assert node is None
+    node = tree.find(250)
+    assert node.value == 250
+
+    print("DONE")
