@@ -4,7 +4,6 @@ Basic example of BST
 
 from __future__ import annotations
 from dataclasses import dataclass
-from typing import List
 import random
 
 
@@ -60,7 +59,7 @@ class Tree:
             current = current.right
         return current
 
-    def in_order(self, node: Node) -> List[str]:
+    def in_order(self, node: Node) -> Node:
         """
         Process left sub tree
         Current tree
@@ -74,7 +73,18 @@ class Tree:
             for n in self.in_order(node.right):
                 yield n
 
-    def __repr__(self):
+    def __iter__(self) -> Tree:
+        self.current = self.in_order(self.root)
+        return self
+
+    def __next__(self) -> Node:
+        node = next(self.current)
+        if node:
+            return
+        else:
+            raise StopIteration
+
+    def __repr__(self) -> str:
         """In-order tree print"""
         trace = []
         for n in self.in_order(self.root):
@@ -96,3 +106,6 @@ if __name__ == "__main__":
     print(f"max tree value {tree.max.value}")
 
     print(tree)
+
+    for node in tree:
+        print(node.value)
