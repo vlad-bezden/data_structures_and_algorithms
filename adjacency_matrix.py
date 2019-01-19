@@ -1,5 +1,5 @@
 """
-Converts graph presented in dict to adjacency matrix
+Converts graph presented as dict to matrix
 
 {'A': ['B', 'C'],
  'B': ['A', 'C', 'E'],
@@ -15,17 +15,14 @@ Converts graph presented in dict to adjacency matrix
 """
 
 from pprint import pprint
+from typing import Dict, List
 
-graph = {
-    "A": ["B", "C"],
-    "B": ["A", "C", "E"],
-    "C": ["A", "B", "E", "F"],
-    "E": ["B", "C"],
-    "F": ["C"],
-}
+Row = List[int]
+Matrix = List[Row]
+Graph = Dict[str, List[str]]
 
 
-def graph_to_matrix(graph):
+def graph_to_matrix(graph: Graph) -> Matrix:
     matrix_elements = sorted(graph.keys())
     rows = len(matrix_elements)
     # allocate matrix size [row x row] with 0
@@ -39,6 +36,18 @@ def graph_to_matrix(graph):
     return matrix
 
 
-pprint(graph)
-matrix = graph_to_matrix(graph)
-pprint(matrix)
+def main():
+    graph = {
+        "A": ["B", "C"],
+        "B": ["A", "C", "E"],
+        "C": ["A", "B", "E", "F"],
+        "E": ["B", "C"],
+        "F": ["C"],
+    }
+    pprint(graph)
+    matrix = graph_to_matrix(graph)
+    pprint(matrix)
+
+
+if __name__ == "__main__":
+    main()
