@@ -65,9 +65,9 @@ if __name__ == "__main__":
     NODES = 100
     root_value = random.randint(0, MAX_VAL)
     tree = Tree(Node(root_value))
-    print(f"Root value: {tree.root.value}")
     for i in random.sample(range(MAX_VAL), NODES):
         tree.insert(i)
 
+    print(f"Root value: {tree.root.value}")
     print(f"min tree value {tree.min.value}")
     print(f"max tree value {tree.max.value}")
