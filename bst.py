@@ -78,11 +78,7 @@ class Tree:
         return self
 
     def __next__(self) -> Node:
-        node = next(self.current)
-        if node:
-            return
-        else:
-            raise StopIteration
+        return next(self.current)
 
     def __repr__(self) -> str:
         """In-order tree print"""
