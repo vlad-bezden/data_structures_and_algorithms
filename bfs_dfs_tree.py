@@ -53,12 +53,17 @@ def main():
         "G": ["A", "E"],
         "H": ["C"],
     }
+    nodes = set(graph.keys())
     print("Graph")
     pprint(graph)
     print("Using BFS")
-    pprint(bfs(graph, "A"))
+    traverse_path = bfs(graph, 'A')
+    pprint(traverse_path)
+    assert nodes.issuperset(set(traverse_path))
     print("using DFS")
-    pprint(dfs(graph, "A"))
+    traverse_path = dfs(graph, "A")
+    pprint(traverse_path)
+    assert nodes.issuperset(set(traverse_path))
 
 
 if __name__ == "__main__":
