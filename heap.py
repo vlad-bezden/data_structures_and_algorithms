@@ -2,7 +2,6 @@
 Heap (min-heap) implementation example
 """
 
-import sys
 from dataclasses import dataclass
 from random import sample
 
