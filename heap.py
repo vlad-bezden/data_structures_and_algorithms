@@ -96,7 +96,7 @@ class Heap:
         self.__heap = [0]
 
     def __repr__(self):
-        return f"[{', '.join(map(str, self.__heap[1:]))}]"
+        return str(self.__heap[1:])
 
 
 def main():
