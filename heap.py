@@ -86,6 +86,9 @@ class Heap:
             self.sink(1)
         return item
 
+    def clear(self):
+        self.heap = [0]
+
     def __repr__(self):
         return f"[{', '.join(map(str, self.heap[1:]))}]"
 
@@ -102,6 +105,15 @@ def main():
     assert heap.size == HEAP_SIZE
     print(f"items: {items}")
     print(f"heap: {heap}")
+
+    heap.clear()
+    assert heap.is_empty is True
+    assert heap.size == 0
+
+    items = [4, 8, 7, 2, 9, 10, 5, 1, 3, 6]
+    for item in items:
+        heap.insert(item)
+        print(f"item: {item}, heap: {heap}")
 
     while not heap.is_empty:
         item = heap.pop()
