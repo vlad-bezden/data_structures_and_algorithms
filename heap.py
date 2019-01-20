@@ -21,6 +21,9 @@ class Heap:
     def size(self) -> int:
         return len(self.__heap) - 1
 
+    def __len__(self) -> int:
+        return self.size
+
     @property
     def is_empty(self) -> bool:
         return self.size <= 0
@@ -35,7 +38,7 @@ class Heap:
 
     def __next__(self):
         self.__current += 1
-        if self.__current < self.size:
+        if not self.is_empty:
             return self.__heap[self.__current]
         else:
             raise StopIteration
@@ -98,14 +101,14 @@ class Heap:
 
 def main():
     heap = Heap()
-    assert heap.size == 0
+    assert heap.size == len(heap) == 0
     assert heap.is_empty is True
 
     items = [i for i in sample(range(100), HEAP_SIZE)]
     for item in items:
         heap.insert(item)
 
-    assert heap.size == HEAP_SIZE
+    assert heap.size == len(heap) == HEAP_SIZE
     print(f"items: {items}")
     print(f"heap: {heap}")
 
