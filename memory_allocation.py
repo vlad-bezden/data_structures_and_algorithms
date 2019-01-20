@@ -1,12 +1,20 @@
 """
 List allocation with teh same value using different techniques
+
+Output:
+first: 0.717055
+second: 1.021743
+third: 0.046112
+forth: 0.005384
 """
 
 from timeit import timeit
 from itertools import repeat
 
+import numpy
 
-SIZE = 10_000
+
+SIZE = 10000
 INIT_VALUE = 0
 
 
@@ -24,6 +32,11 @@ def third():
     return [INIT_VALUE] * SIZE
 
 
-for x in [first, second, third]:
-    t = timeit(stmt=x, number=1_000)
-    print(f"{x.__name__}: {t}")
+def forth():
+    """Using numpy"""
+    return numpy.zeros(SIZE, numpy.int)
+
+
+for x in [first, second, third, forth]:
+    t = timeit(stmt=x, number=1000)
+    print(f"{x.__name__}: {t:.6f}")
