@@ -7,9 +7,7 @@ from typing import List
 def quick_sort(data: List[int]) -> List[int]:
     if len(data) < 2:
         return data
-    # get pivot index
-    pivot = data.pop(random.randint(0, len(data) - 1))
-    left, right = [], []
+    pivot, left, right = data.pop(), [], []
     for item in data:
         if item < pivot:
             left.append(item)
