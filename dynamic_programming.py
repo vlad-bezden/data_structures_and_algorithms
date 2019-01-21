@@ -1,9 +1,11 @@
 """
 Performance calculation for memoization, and tabularization
 
-fib took: 2.564971
-dynamic_fib took: 0.000275
-tabular_fib took: 0.000228
+fib took: 28.081572
+dynamic_fib took: 0.000157
+tabular_fib took: 0.000178
+
+Memoization is about 164K times faster
 """
 from timeit import timeit
 
