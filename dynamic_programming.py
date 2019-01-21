@@ -1,44 +1,42 @@
 """
 Performance calculation for memoization, and tabularization
 
-fib took: 28.081572
-dynamic_fib took: 0.000157
-tabular_fib took: 0.000178
+fib took: 28.341462
+mem_fib took: 0.000143
+tabular_fib took: 0.000181
 
-Memoization is about 164K times faster
+Memoization is about 200K times faster
 """
 from timeit import timeit
 
 
-LOOKUP_SIZE = 10000
+LOOKUP_SIZE = 100
 number = 30
 lookup = [None] * LOOKUP_SIZE
 
 
 def fib(n):
-    return 1 if n <= 2 else fib(n - 2) + fib(n - 1)
+    return 1 if n <= 2 else fib(n - 1) + fib(n - 2)
 
 
-def dyna_fib(n, lookup):
+def mem_fib(n):
+    """Using memoization"""
     if n <= 2:
         return 1
     if lookup[n] is None:
-        lookup[n] = dyna_fib(n - 1, lookup) + dyna_fib(n - 2, lookup)
+        lookup[n] = mem_fib(n - 1) + mem_fib(n - 2)
 
     return lookup[n]
 
 
-def dynamic_fib(n):
-    return dyna_fib(n, lookup)
-
-
 def tabular_fib(n):
+    """Using Tabulation"""
     results = [1, 1]
     for i in range(2, n):
         results.append(results[i - 1] + results[i - 2])
     return results[-1]
 
 
-for f in [fib, dynamic_fib, tabular_fib]:
+for f in [fib, mem_fib, tabular_fib]:
     t = timeit(stmt=f"f({number})", number=10, globals=globals())
     print(f"{f.__name__} took: {t:.6f}")
