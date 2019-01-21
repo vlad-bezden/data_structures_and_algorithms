@@ -1,11 +1,15 @@
 """
 Performance calculation for memoization, and tabularization
+
+fib took: 2.564971
+dynamic_fib took: 0.000275
+tabular_fib took: 0.000228
 """
 from timeit import timeit
 
 
 LOOKUP_SIZE = 10000
-number = 25
+number = 30
 lookup = [None] * LOOKUP_SIZE
 
 
@@ -33,10 +37,6 @@ def tabular_fib(n):
     return results[-1]
 
 
-t1 = timeit(stmt=f"fib({number})", number=10, globals=globals())
-t2 = timeit(stmt=f"dynamic_fib({number})", number=10, globals=globals())
-t3 = timeit(stmt=f"tabular_fib({number})", number=10, globals=globals())
-
-print(f"fib took: {t1:.6f}")
-print(f"dyna_fib took: {t2:.6f}")
-print(f"tabular_fib took: {t3: 6f}")
+for f in [fib, dynamic_fib, tabular_fib]:
+    t = timeit(stmt=f"f({number})", number=10, globals=globals())
+    print(f"{f.__name__} took: {t:.6f}")
