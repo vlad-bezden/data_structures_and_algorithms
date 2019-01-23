@@ -19,10 +19,10 @@ class NodeInfo:
         self.distance = distance
 
 
-def create_table(graph, start_node):
+def create_table(graph, origin):
     """Creates table of distances for each node"""
-    table = {start_node: NodeInfo(None, 0)}
-    for k in (k for k in graph.keys() if k != start_node):
+    table = {origin: NodeInfo(None, 0)}
+    for k in (k for k in graph.keys() if k != origin):
         table[k] = NodeInfo(None, INFINITY)
     return table
 
@@ -62,6 +62,18 @@ def shortest_path(graph, origin):
     return table
 
 
+def trace(target, table):
+    if target is None:
+        return []
+    parent = table[target].parent
+    return trace(parent, table) + [target]
+
+
+def print_shortest_path(target, table):
+    result = trace(target, table)
+    print("->".join(result))
+
+
 def main():
     graph = {
         "A": {"B": 5, "D": 9, "E": 2},
@@ -73,6 +85,7 @@ def main():
     }
     result = shortest_path(graph, "A")
     pprint(result)
+    print_shortest_path("D", result)
 
 
 if __name__ == "__main__":
