@@ -62,16 +62,18 @@ def shortest_path(graph, origin):
     return table
 
 
-def trace(target, table):
-    if target is None:
-        return []
-    parent = table[target].parent
-    return trace(parent, table) + [target]
+def breadcrumb(target, table):
+    """Trace shortest path from start to the target"""
+    path = []
+    while target:
+        path.append(target)
+        target = table[target].parent
+    return reversed(path)
 
 
 def print_shortest_path(target, table):
-    result = trace(target, table)
-    print("->".join(result))
+    path = breadcrumb(target, table)
+    print(f"Shortest path to target '{target}' is {'->'.join(path)}")
 
 
 def main():
