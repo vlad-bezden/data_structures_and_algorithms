@@ -2,24 +2,30 @@
 Find the shortest pass using Dijkstra's algorithm
 """
 
+import sys
 from pprint import pprint
 from dataclasses import dataclass
+from typing import Dict, TypeVar, Optional, Iterator
 
+INFINITY = sys.maxsize
 
-INFINITY = float("inf")
+Path = Dict[str, int]
+Graph = Dict[str, Path]
+Node = TypeVar("Node", bound="NodeInfo")
+Table = Dict[str, Node]
 
 
 @dataclass
 class NodeInfo:
-    parent: str
+    parent: Optional[str]
     distance: int
 
-    def update(self, parent: str, distance: int):
+    def update(self, parent: str, distance: int) -> None:
         self.parent = parent
         self.distance = distance
 
 
-def create_table(graph, origin):
+def create_table(graph: Graph, origin: str) -> Table:
     """Creates table of distances for each node"""
     table = {origin: NodeInfo(None, 0)}
     for k in (k for k in graph.keys() if k != origin):
@@ -27,7 +33,7 @@ def create_table(graph, origin):
     return table
 
 
-def lowest_distance_node(processed, table):
+def lowest_distance_node(processed: set, table: Table) -> Optional[str]:
     """Finds the lowest distance node.
 
     Lowest distance node hast to be processed next
@@ -41,11 +47,11 @@ def lowest_distance_node(processed, table):
     return lowest_node_distance
 
 
-def shortest_path(graph, origin):
+def shortest_path(graph: Graph, origin: str) -> Table:
     """Creates table of shortest paths to all nodes from origin node"""
     table = create_table(graph, origin)
     visited_nodes = set()
-    current_node = origin
+    current_node: Optional[str] = origin
 
     while current_node:
         # distance from origin node to current_node
@@ -62,7 +68,7 @@ def shortest_path(graph, origin):
     return table
 
 
-def breadcrumb(target, table):
+def breadcrumb(target: str, table: Table) -> Iterator[str]:
     """Trace shortest path from start to the target"""
     path = []
     while target:
@@ -71,12 +77,12 @@ def breadcrumb(target, table):
     return reversed(path)
 
 
-def print_shortest_path(target, table):
+def print_shortest_path(target: str, table: Table) -> None:
     path = breadcrumb(target, table)
     print(f"Shortest path to target '{target}' is {'->'.join(path)}")
 
 
-def main():
+def main() -> None:
     graph = {
         "A": {"B": 5, "D": 9, "E": 2},
         "B": {"A": 5, "C": 2},
