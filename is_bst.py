@@ -3,6 +3,7 @@
 from __future__ import annotations
 import sys
 from dataclasses import dataclass
+from typing import Optional
 
 MAX_VALUE = sys.maxsize
 MIN_VALUE = -sys.maxsize - 1
@@ -11,16 +12,18 @@ MIN_VALUE = -sys.maxsize - 1
 @dataclass
 class Node:
     value: int
-    left: Node
-    right: Node
+    left: Optional[Node]
+    right: Optional[Node]
 
     @property
     def is_leaf(self) -> bool:
         return not self.left and not self.right
 
 
-def is_bst(node: Node, min_value: int, max_value: int) -> bool:
-    if node.value < min_value or max_value < node.value:
+def is_bst(node: Optional[Node], min_value: int, max_value: int) -> bool:
+    if node is None:
+        return True
+    elif node.value < min_value or max_value < node.value:
         return False
     elif node.is_leaf:
         return True
