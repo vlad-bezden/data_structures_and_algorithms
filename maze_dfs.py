@@ -82,3 +82,5 @@ if __name__ == "__main__":
     ]
     path = bfs_find(maze)
     print(f"Path: {path}")
+    assert path == "SSSSSSSSSSSEENWNENNEEEEEEESSSS"
+    print('Done!!!')
