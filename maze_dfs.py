@@ -1,8 +1,9 @@
 """
 You get an input as list of list List[List[Int]]
 The input can have values 0, 1 and only one valuse is 7.
-You always starts from top left cornet of the matrix and you can move on 1 only, not on 0
-Most left corner with coordinates 0,0 always has 1
+You always starts from top left cornet of the matrix and you can move on 1 only,
+not on 0.
+Most left corner with coordinates 0, 0 always has 1
 
 Find minimum number of stept from left top cornet to the number 7
 """
