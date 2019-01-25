@@ -38,7 +38,7 @@ class Maze:
         self.size = Size(len(map[0]), len(map))
 
     def valid_point(self, point: Point) -> bool:
-        """Checks if point inside of the map."""
+        """Checks if point inside of the map and it's final or path value"""
         return (
             0 <= point.x < self.size.heigth
             and 0 <= point.y < self.size.width
