@@ -8,13 +8,13 @@ Most left corner with coordinates 0, 0 always has 1
 Find minimum number of stept from left top cornet to the number 7
 """
 
-from typing import List
-from queue import deque
-from collections import namedtuple
-from functools import partial
+from __future__ import annotations
+from typing import List, Set
+from collections import namedtuple, deque
 
-Maze = List[List[int]]
 
+Map = List[List[int]]
+Size = namedtuple("Size", ["width", "heigth"])
 Point = namedtuple("Point", ["x", "y"])
 
 MOVES = [
@@ -27,46 +27,49 @@ START = Point(0, 0)
 FINAL_VALUE = 7
 
 
-def is_inside(point: Point, width: int, height: int) -> bool:
-    """Checks if point/coordinate inside of box"""
-
-    return (
-        False
-        if (point.x < 0 or point.x >= height or point.y < 0 or point.y >= width)
-        else True
-    )
+def add_points(first: Point, second: Point) -> Point:
+    """Adds two points and creates new point"""
+    return Point(first.x + second.x, first.y + second.y)
 
 
-def new_point(left: Point, right: Point) -> Point:
-    """Add movement to the current point"""
-    return Point(left.x + right.x, left.y + right.y)
+class Maze:
+    def __init__(self, map: Map) -> None:
+        self.map = map
+        self.size = Size(len(map[0]), len(map))
 
+    def valid_point(self, point: Point) -> bool:
+        """Checks if point inside of the map."""
+        return (
+            0 <= point.x < self.size.heigth
+            and 0 <= point.y < self.size.width
+            and self.value(point) in [1, FINAL_VALUE]
+        )
 
-def bfs_find(maze: Maze) -> str:
-    width = len(maze[0])
-    height = len(maze)
-    is_inside_ = partial(is_inside, width=width, height=height)
-    visited = set()
-    current = ("", START)
-    queue = deque([current])
+    def value(self, point: Point) -> int:
+        """Value on the map"""
+        return self.map[point.x][point.y]
 
-    while queue:
-        path, current = queue.pop()
-        if current in visited:
-            continue
-        if maze[current.x][current.y] == FINAL_VALUE:
-            return path
-        visited.add(current)
-        for direction, offset in MOVES:
-            neighbor = new_point(current, offset)
-            if is_inside_(neighbor) and maze[neighbor.x][neighbor.y] >= 1:
-                queue.append((path + direction, neighbor))
+    def bfs_find(self):
+        """Searches for shortest path using Breadth First Search (BFS)"""
+        visited: Set[Point] = set()
+        queue = deque([("", START)])
 
-    return "NOT FOUND!"
+        while queue:
+            path, current = queue.pop()
+            if self.value(current) == FINAL_VALUE:
+                return path
+            if current in visited:
+                continue
+            for dir, point in MOVES:
+                new_point = add_points(current, point)
+                if self.valid_point(new_point):
+                    queue.appendleft((path + dir, new_point))
+            visited.add(current)
+        return "NOT FOUND!!!"
 
 
 if __name__ == "__main__":
-    maze = [
+    map = [
         [1, 0, 1, 1, 1, 1, 0, 1, 1, 1],
         [1, 0, 1, 0, 1, 1, 1, 0, 1, 1],
         [1, 1, 1, 0, 1, 1, 0, 1, 0, 1],
@@ -80,7 +83,9 @@ if __name__ == "__main__":
         [1, 1, 1, 0, 0, 0, 1, 0, 0, 1],
         [1, 1, 1, 0, 0, 0, 1, 0, 0, 7],
     ]
-    path = bfs_find(maze)
+    maze = Maze(map)
+    path = maze.bfs_find()
     print(f"Path: {path}")
-    assert path == "SSSSSSSSSSSEENWNENNEEEEEEESSSS"
-    print('Done!!!')
+    # 8S -> 2E -> 1N -> 7E -> 4S
+    assert path == "SSSSSSSSEENEEEEEEESSSS"
+    print("Done!!!")
