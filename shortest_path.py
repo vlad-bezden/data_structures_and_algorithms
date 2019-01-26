@@ -17,8 +17,8 @@ Table = Dict[str, Node]
 
 @dataclass
 class NodeInfo:
-    parent: Optional[str]
-    distance: int
+    parent: Optional[str] = None
+    distance: int = INFINITY
 
     def update(self, parent: str, distance: int) -> None:
         self.parent = parent
@@ -27,9 +27,8 @@ class NodeInfo:
 
 def create_table(graph: Graph, origin: str) -> Table:
     """Creates table of distances for each node"""
-    table = {origin: NodeInfo(None, 0)}
-    for k in (k for k in graph.keys() if k != origin):
-        table[k] = NodeInfo(None, INFINITY)
+    table = {k: NodeInfo() for k in graph.keys()}
+    table[origin].update(None, 0)
     return table
 
 
@@ -57,8 +56,7 @@ def shortest_path(graph: Graph, origin: str) -> Table:
         # distance from origin node to current_node
         distance = table[current_node].distance
         # neighbors of current_node
-        neighbors = graph[current_node]
-        for k, v in neighbors.items():
+        for k, v in graph[current_node].items():
             new_distance = distance + v
             if new_distance < table[k].distance:
                 table[k].update(current_node, new_distance)
@@ -94,6 +92,25 @@ def main() -> None:
     result = shortest_path(graph, "A")
     pprint(result)
     print_shortest_path("D", result)
+    assert result["C"].distance == 7
+    assert result["D"].distance == 7
+    assert result["F"].distance == 5
+
+    # another example from enki's app
+    graph = {
+        "A": {"B": 10, "C": 5, "D": 20, "E": 18},
+        "B": {"A": 10, "D": 5},
+        "C": {"A": 5, "D": 3},
+        "D": {"A": 20, "E": 2},
+        "E": {"A": 18, "D": 2},
+    }
+    result = shortest_path(graph, "A")
+    pprint(result)
+    print_shortest_path("E", result)
+    assert result["B"].distance == 10
+    assert result["C"].distance == 5
+    assert result["D"].distance == 8
+    assert result["E"].distance == 10
 
 
 if __name__ == "__main__":
