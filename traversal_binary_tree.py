@@ -19,40 +19,38 @@ in-order, pre-order and post-order traversal of binary tree
 
 
 from __future__ import annotations
+from typing import Optional
 from dataclasses import dataclass
 
 
 @dataclass
 class Node:
     data: str
-    left: Node = None
-    right: Node = None
+    left: Optional[Node] = None
+    right: Optional[Node] = None
 
 
 @dataclass
 class Tree:
     root: Node
 
-    def in_order(self, node: Node) -> None:
-        if not node:
-            return
-        self.in_order(node.left)
-        print(node.data, end="->")
-        self.in_order(node.right)
+    def in_order(self, node: Optional[Node]) -> None:
+        if node:
+            self.in_order(node.left)
+            print(node.data, end="->")
+            self.in_order(node.right)
 
-    def pre_order(self, node: Node) -> None:
-        if not node:
-            return
-        print(node.data, end="->")
-        self.pre_order(node.left)
-        self.pre_order(node.right)
+    def pre_order(self, node: Optional[Node]) -> None:
+        if node:
+            print(node.data, end="->")
+            self.pre_order(node.left)
+            self.pre_order(node.right)
 
-    def post_order(self, node: Node) -> None:
-        if not node:
-            return
-        self.post_order(node.left)
-        self.post_order(node.right)
-        print(node.data, end="->")
+    def post_order(self, node: Optional[Node]) -> None:
+        if node:
+            self.post_order(node.left)
+            self.post_order(node.right)
+            print(node.data, end="->")
 
 
 if __name__ == "__main__":
