@@ -2,6 +2,7 @@
 BTree implementation example
 
            50
+         /    \
         /      \
       25        75
      /  \      /    \
@@ -94,9 +95,31 @@ class BTree:
                     current = current.right
         return node
 
+    def _leaf_count(self, node: Optional[Node]) -> int:
+        if node is None:
+            return 0
+        elif node.is_leaf:
+            return 1
+        return self._leaf_count(node.left) + self._leaf_count(node.right)
+
+    @property
+    def leaf_count(self) -> int:
+        """Counts number of leafs in the tree"""
+        return self._leaf_count(self.root)
+
     @property
     def height(self) -> int:
         return self._height(self.root)
+
+    def _size(self, node: Optional[Node]) -> int:
+        if node is None:
+            return 0
+        else:
+            return 1 + self._size(node.left) + self._size(node.right)
+
+    @property
+    def size(self):
+        return self._size(self.root)
 
 
 def main():
@@ -115,7 +138,15 @@ def main():
     tree.add(52)
     tree.add(82)
     tree.add(95)
-    print(f"Tree height is: {tree.height}")
+    result = tree.height
+    print(f"Tree height is: {result}")
+    assert result == 3
+    result = tree.leaf_count
+    assert result == 8
+    print(f"There are {result} leafs in the tree")
+    result = tree.size
+    print(f"There are {result} nodes in the tree")
+    assert result == 15
     tree.in_order()
     result = tree.search(95)
     assert result.value == 95
