@@ -37,13 +37,11 @@ def lowest_distance_node(processed: set, table: Table) -> Optional[str]:
 
     Lowest distance node hast to be processed next
     """
-    lowest_distance = INFINITY
-    lowest_node_distance = None
-    for k, v in ((k, v) for k, v in table.items() if k not in processed):
-        if v.distance < lowest_distance:
-            lowest_distance = v.distance
-            lowest_node_distance = k
-    return lowest_node_distance
+    lowest_node_distance = min(
+        ((k, v) for k, v in table.items() if k not in processed),
+        key=lambda i: i[1].distance, default=(None,)
+    )
+    return lowest_node_distance[0]
 
 
 def shortest_path(graph: Graph, origin: str) -> Table:
