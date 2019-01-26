@@ -11,7 +11,7 @@ Find minimum number of stept from left top cornet to the number 7
 from __future__ import annotations
 from typing import List, Set
 from collections import namedtuple, deque
-
+from itertools import zip_longest
 
 Map = List[List[int]]
 Size = namedtuple("Size", ["width", "heigth"])
@@ -68,7 +68,23 @@ class Maze:
         return "NOT FOUND!!!"
 
 
-if __name__ == "__main__":
+def moves(path: str) -> str:
+    """Generates moves path."""
+
+    counts = []
+    counter = 1
+    total = 0
+    for a, b in zip_longest(path, path[1:], fillvalue=None):
+        total += 1
+        if a == b:
+            counter += 1
+        else:
+            counts.append(f"{counter}{a}")
+            counter = 1
+    return total, "->".join(counts)
+
+
+def main():
     map = [
         [1, 0, 1, 1, 1, 1, 0, 1, 1, 1],
         [1, 0, 1, 0, 1, 1, 1, 0, 1, 1],
@@ -86,6 +102,13 @@ if __name__ == "__main__":
     maze = Maze(map)
     path = maze.bfs_find()
     print(f"Path: {path}")
-    # 8S -> 2E -> 1N -> 7E -> 4S
     assert path == "SSSSSSSSEENEEEEEEESSSS"
-    print("Done!!!")
+    total, breadcrumb = moves(path)
+    print(f"Total Steps: {total}. Breadcrumb: {breadcrumb}")
+    assert breadcrumb == "8S->2E->1N->7E->4S"
+    assert total == 22
+
+
+if __name__ == "__main__":
+    main()
+    print("DONE!!!")
