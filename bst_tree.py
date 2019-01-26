@@ -1,5 +1,5 @@
 """
-BTree implementation example
+BST Tree implementation example
 
            --50--
          /        \
@@ -46,7 +46,7 @@ class Node:
         return str(self.value)
 
 
-class BTree:
+class BST:
     def __init__(self, value: int) -> None:
         self.root = Node(value)
 
@@ -123,7 +123,7 @@ class BTree:
 
 
 def main():
-    tree = BTree(50)
+    tree = BST(50)
     tree.add(25)
     tree.add(75)
     tree.add(10)
