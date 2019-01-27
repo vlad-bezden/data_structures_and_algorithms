@@ -14,7 +14,7 @@ def graph_to_table(graph, start):
     return {k: Node(None, 0 if k == start else INFINITY) for k in graph}
 
 
-def next_to_process(table, visited, current):
+def next_to_process(table, visited):
     return min(
         ((k, v) for k, v in table.items() if k not in visited),
         key=lambda i: i[1].value,
@@ -44,7 +44,7 @@ def calc(graph, start):
             if new_value < table[k].value:
                 table[k].update(current, new_value)
         visited.add(current)
-        current = next_to_process(table, visited, current)
+        current = next_to_process(table, visited)
 
     return table
 
