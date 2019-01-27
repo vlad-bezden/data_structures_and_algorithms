@@ -27,9 +27,7 @@ class NodeInfo:
 
 def create_table(graph: Graph, origin: str) -> Table:
     """Creates table of distances for each node"""
-    table = {k: NodeInfo() for k in graph.keys()}
-    table[origin].update(None, 0)
-    return table
+    return {k: NodeInfo(k, 0 if k == origin else INFINITY) for k in graph.keys()}
 
 
 def lowest_distance_node(processed: Set[str], table: Table) -> Optional[str]:
