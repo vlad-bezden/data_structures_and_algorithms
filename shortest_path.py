@@ -5,7 +5,7 @@ Find the shortest pass using Dijkstra's algorithm
 import sys
 from pprint import pprint
 from dataclasses import dataclass
-from typing import Dict, TypeVar, Optional, Iterator
+from typing import Dict, TypeVar, Optional, Iterator, Set
 
 INFINITY = sys.maxsize
 
@@ -20,7 +20,7 @@ class NodeInfo:
     parent: Optional[str] = None
     distance: int = INFINITY
 
-    def update(self, parent: str, distance: int) -> None:
+    def update(self, parent: Optional[str], distance: int) -> None:
         self.parent = parent
         self.distance = distance
 
@@ -32,16 +32,16 @@ def create_table(graph: Graph, origin: str) -> Table:
     return table
 
 
-def lowest_distance_node(processed: set, table: Table) -> Optional[str]:
+def lowest_distance_node(processed: Set[str], table: Table) -> Optional[str]:
     """Finds the lowest distance node.
 
     Lowest distance node hast to be processed next
     """
-    lowest_node_distance = min(
+    return min(
         ((k, v) for k, v in table.items() if k not in processed),
-        key=lambda i: i[1].distance, default=(None,)
-    )
-    return lowest_node_distance[0]
+        key=lambda i: i[1].distance,
+        default=(None,),
+    )[0]
 
 
 def shortest_path(graph: Graph, origin: str) -> Table:
