@@ -12,13 +12,11 @@ def overlap(text1, text2):
     """
     Returns longest overlap, between two strings
     """
-    index_a = -1
-    index_b = -1
-    best_match_length = 0
+    best_match = Match(0, -1, -1)
     i = 0
     text1_length = len(text1)
 
-    for i in range(text1_length):
+    while i < text1_length:
         for j, c1, c2 in (
             (j, *t) for j, t in enumerate(zip(text1[i:], text2)) if t[0] == t[1]
         ):
@@ -28,14 +26,12 @@ def overlap(text1, text2):
                 and text1[i + j + match_length] == text2[j + match_length]
             ):
                 match_length += 1
-            if best_match_length < match_length:
-                best_match_length = match_length
-                index_a = i + j
-                index_b = j
+            if best_match.length < match_length:
+                best_match = Match(match_length, i + j, j)
                 i += match_length
             break
-
-    return Match(best_match_length, index_a, index_b)
+        i += 1
+    return best_match
 
 
 class Tests(unittest.TestCase):
