@@ -17,22 +17,24 @@ def overlap(text1, text2):
     best_match_length = 0
     i = 0
     text1_length = len(text1)
-    text2_length = len(text2)
 
     for i in range(text1_length):
-        for j in (j for j in range(text2_length) if j + i < text1_length):
-            if text1[i + j] == text2[j]:
-                match_length = 1
-                while (
-                    i + j + match_length < text1_length
-                    and text1[i + j + match_length] == text2[j + match_length]
-                ):
-                    match_length += 1
-                if best_match_length < match_length:
-                    best_match_length = match_length
-                    index_a = i + j
-                    index_b = j
-                    j += best_match_length
+        for j, c1, c2 in (
+            (j, *t) for j, t in enumerate(zip(text1[i:], text2)) if t[0] == t[1]
+        ):
+            match_length = 1
+            while (
+                i + j + match_length < text1_length
+                and text1[i + j + match_length] == text2[j + match_length]
+            ):
+                match_length += 1
+            if best_match_length < match_length:
+                best_match_length = match_length
+                index_a = i + j
+                index_b = j
+                i += match_length
+            break
+
     return Match(best_match_length, index_a, index_b)
 
 
