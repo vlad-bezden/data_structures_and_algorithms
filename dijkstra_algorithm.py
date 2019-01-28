@@ -16,9 +16,7 @@ def graph_to_table(graph, start):
 
 def next_to_process(table, visited):
     return min(
-        ((k, v) for k, v in table.items() if k not in visited),
-        key=lambda i: i[1].value,
-        default=(None, 0),
+        ((k, v) for k, v in table.items()), key=lambda i: i[1].value, default=(None, 0)
     )[0]
 
 
