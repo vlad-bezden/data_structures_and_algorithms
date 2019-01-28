@@ -20,21 +20,19 @@ def overlap(text1, text2):
     text2_length = len(text2)
 
     for i in range(text1_length):
-        for j in (
-            j
-            for j in range(text2_length)
-            if i + j < text1_length and text1[i + j] == text2[j]
-        ):
-            match_length = 1
-            while (
-                i + j + match_length < text1_length
-                and text1[i + j + match_length] == text2[j + match_length]
-            ):
-                match_length += 1
-            if best_match_length < match_length:
-                best_match_length = match_length
-                index_a = i + j
-                index_b = j
+        for j in (j for j in range(text2_length) if j + i < text1_length):
+            if text1[i + j] == text2[j]:
+                match_length = 1
+                while (
+                    i + j + match_length < text1_length
+                    and text1[i + j + match_length] == text2[j + match_length]
+                ):
+                    match_length += 1
+                if best_match_length < match_length:
+                    best_match_length = match_length
+                    index_a = i + j
+                    index_b = j
+                    j += best_match_length
     return Match(best_match_length, index_a, index_b)
 
 
