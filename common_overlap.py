@@ -8,25 +8,6 @@ import unittest
 Match = namedtuple("Match", ["length", "s1_index", "s2_index"])
 
 
-def overlap_index(text1, text2):
-    """
-    Returns starting match index and matching length.
-
-    This one assumes that overlap starts at the beginning of the string
-    """
-    best = 0
-    length = 1
-    while True:
-        pattern = text1[-length:]
-        found = text2.find(pattern)
-        if found == -1:
-            return len(text1) - best, best
-        length += found
-        if text1[-length:] == text2[:length]:
-            best = length
-            length += 1
-
-
 def overlap(text1, text2):
     """
     Returns longest overlap, between two strings
@@ -58,18 +39,6 @@ def overlap(text1, text2):
 
 
 class Tests(unittest.TestCase):
-    def test_overlap_index_1(self):
-        a = "python"
-        b = "honbe"
-        result = overlap_index(a, b)
-        self.assertEqual(result, (3, 3))
-
-    def test_overlap_index_2(self):
-        a = "Python is amazing language"
-        b = "languages express meaning"
-        result = overlap_index(a, b)
-        self.assertEqual(result, (18, 8))
-
     def test_overlap_1(self):
         a = "colors"
         b = "antique"
