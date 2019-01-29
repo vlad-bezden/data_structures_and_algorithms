@@ -1,11 +1,10 @@
 """
-Performance calculation for memoization, and tabularization
+Performance calculation for recursion, memoization, tabulation and generator
 
-fib took: 28.341462
-mem_fib took: 0.000143
-tabular_fib took: 0.000181
-
-Memoization is about 200K times faster
+fib took: 27.052446
+mem_fib took: 0.000134
+tabular_fib took: 0.000175
+yield_fib took: 0.000033
 """
 from timeit import timeit
 
@@ -20,7 +19,7 @@ def fib(n):
 
 
 def mem_fib(n):
-    """Using memoization"""
+    """Using memoization."""
     if n <= 2:
         return 1
     if lookup[n] is None:
@@ -30,13 +29,24 @@ def mem_fib(n):
 
 
 def tabular_fib(n):
-    """Using Tabulation"""
+    """Using Tabulation."""
     results = [1, 1]
     for i in range(2, n):
         results.append(results[i - 1] + results[i - 2])
     return results[-1]
 
 
-for f in [fib, mem_fib, tabular_fib]:
+def yield_fib(n):
+    """Using generator."""
+    a = b = 1
+    yield a
+    yield b
+    while n > 2:
+        n -= 1
+        a, b = b, a + b
+        yield b
+
+
+for f in [fib, mem_fib, tabular_fib, yield_fib]:
     t = timeit(stmt=f"f({number})", number=10, globals=globals())
     print(f"{f.__name__} took: {t:.6f}")
