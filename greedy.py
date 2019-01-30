@@ -31,4 +31,4 @@ while states_needed:
     final_stations.add(best_station)
 
 print(final_stations)
-# {'kone', 'kthree', 'kfive', 'ktwo'}
+assert final_stations == {"kone", "kthree", "kfive", "ktwo"}

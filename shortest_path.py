@@ -33,7 +33,7 @@ def create_table(graph: Graph, origin: str) -> Table:
 def lowest_distance_node(processed: Set[str], table: Table) -> Optional[str]:
     """Finds the lowest distance node.
 
-    Lowest distance node hast to be processed next
+    Lowest distance node has to be processed next
     """
     return min(
         ((k, v) for k, v in table.items() if k not in processed),

@@ -1,5 +1,5 @@
 """
-Creates 2D matrix
+Examples of how to create 2D matrix, multiply by scalar and dot operation
 """
 
 from typing import List
