@@ -5,6 +5,7 @@ Producer - Consumer (pub-sub) example
 import threading
 from queue import Queue
 from time import sleep
+from random import random
 
 
 def producer(q, n):
@@ -13,7 +14,7 @@ def producer(q, n):
     while a <= n:
         q.put(a)
         print(f"Producer: {a}")
-        sleep(0.25)
+        sleep(random())
         a, b = b, a + b
     q.put(None)
 
@@ -23,7 +24,7 @@ def consumer(q):
     while True:
         num = q.get()
         print(f"\nConsumer: {num}")
-        sleep(0.4)
+        sleep(random())
         q.task_done()
         if num is None:
             break
