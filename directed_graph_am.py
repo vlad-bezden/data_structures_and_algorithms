@@ -19,7 +19,7 @@ class DirectedGraphAM:
         """Representation of graph."""
         rep = "graph:["
         for k, v in self.vertices.items():
-            rep += f"{str(k)}: {', '.join(str(i) for i in v.items())}"
+            rep += f"{str(k)}: {', '.join(map(str, v.items()))}"
         return rep + "]"
 
 
