@@ -10,9 +10,14 @@ logging.basicConfig(level=logging.INFO)
 Message = namedtuple("Message", ["msg_id", "inst_name"])
 
 
+def exception_handler(context):
+    logging.error(f"Exception: {context['exception']}")
+
+
 def main():
     queue = asyncio.Queue()
     loop = asyncio.get_event_loop()
+    loop.set_exception_handler(exception_handler)
 
     try:
         loop.create_task(publisher(queue))
