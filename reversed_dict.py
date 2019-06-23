@@ -1,8 +1,8 @@
 """
-Python lacks a way to store more than a value for each key in a dictionary.
+Python lacks a way to store more than value for each key in a dictionary.
 This is a very common need, and most languages provide some form of multimap container.
 Python tends to prefer having a single way of doing things,
-and as storing multiple values for the keymeans just storing a list of values
+and as storing multiple values for the key means just storing a list of values
 for a key, it doesn't provide a specialized container.
 """
 
