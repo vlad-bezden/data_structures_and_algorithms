@@ -25,11 +25,12 @@ class Config(TypedDict):
 class GenericInputData(metaclass=ABCMeta):
     @abstractmethod
     def read(self) -> str:
-        pass
+        ...
 
     @classmethod
+    @abstractmethod
     def generate_inputs(cls, config: Config) -> Iterator[PathInputData]:
-        raise NotImplementedError
+        ...
 
 
 class PathInputData(GenericInputData):
@@ -55,11 +56,11 @@ class GenericWorker(metaclass=ABCMeta):
 
     @abstractmethod
     def map(self) -> None:
-        pass
+        ...
 
     @abstractmethod
     def reduce(self, other: GenericWorker) -> None:
-        pass
+        ...
 
     @classmethod
     def create_workers(
