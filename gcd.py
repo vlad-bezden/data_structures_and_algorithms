@@ -1,15 +1,30 @@
-"""Find the greatest common divisor of a and b."""
+"""Find the greatest common divisor (GCD) of a and b."""
 
 
 def gcd(a: int, b: int) -> int:
+    """GCD using recursion."""
+
     if b == 0:
         return a
     return gcd(b, a % b)
 
 
+def gcd2(a: int, b: int) -> int:
+    """GCD using loop."""
+
+    while b:
+        a, b = b, a % b
+    return a
+
+
 if __name__ == "__main__":
-    assert gcd(180, 150) == 30, "180/150"
-    assert gcd(200, 15) == 5, "200/15"
-    assert gcd(42, 56) == 14, "42/56"
-    assert gcd(10, 9) == 1, "10/9"
-    assert gcd(270, 192) == 6, "270/192"
+    funcs = [gcd, gcd2]
+
+    for func in funcs:
+        assert func(180, 150) == 30, "180/150"
+        assert func(200, 15) == 5, "200/15"
+        assert func(42, 56) == 14, "42/56"
+        assert func(10, 9) == 1, "10/9"
+        assert func(270, 192) == 6, "270/192"
+
+    print("tests passed")
