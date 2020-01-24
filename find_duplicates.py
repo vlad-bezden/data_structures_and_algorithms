@@ -22,6 +22,7 @@ import random as re
 from collections import defaultdict, Counter
 import itertools
 import timeit
+from typing import List
 
 re.seed(42)
 
@@ -31,20 +32,20 @@ dups_long_list = long_list + long_list[:1]
 dups_short_list = short_list + short_list[:1]
 
 
-def using_count(d):
+def using_count(d: List[int]) -> bool:
     """It's O(n**2)."""
     return 1 < max(d.count(x) for x in set(d))
 
 
-def using_dict(d):
+def using_dict(d: List[int]) -> bool:
     """It's O(n)"""
-    counter = defaultdict(int)
+    counter: dict = defaultdict(int)
     for i in d:
         counter[i] += 1
     return 1 < max(counter.values())
 
 
-def using_counter(d):
+def using_counter(d: List[int]) -> bool:
     """Using Counter from Python standard library."""
     counter = Counter(d)
     return 1 < max(counter.values())
@@ -57,4 +58,4 @@ if __name__ == "__main__":
     for f, d in itertools.product(funcs, data):
         t = timeit.timeit(stmt=f"f({d})", number=100, globals=globals())
         print(f"{f.__name__} took: {t:.4f} sec")
-
+    print()
