@@ -29,10 +29,8 @@ def efficient(data: List, sum_value: int) -> int:
     current_sum = 0
     for v in data:
         current_sum += v
-        times = prefix_sum_counts.get(current_sum - sum_value, 0)
-        counter += times
-        times = prefix_sum_counts.get(current_sum, 0)
-        prefix_sum_counts[current_sum] = times + 1
+        counter += prefix_sum_counts.get(current_sum - sum_value, 0)
+        prefix_sum_counts[current_sum] = prefix_sum_counts.get(current_sum, 0) + 1
     return counter
 
 
