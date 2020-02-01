@@ -1,24 +1,8 @@
 """Converts number from one base to another numerical base."""
 
-from dataclasses import dataclass
+from collections import namedtuple
 
-
-@dataclass(frozen=True)
-class Test:
-    n: int
-    from_base: int
-    to_base: int
-    expected: int
-
-
-Tests = [
-    Test(32, 16, 10, 50),
-    Test(32, 20, 10, 62),
-    Test(1010, 2, 10, 10),
-    Test(8, 10, 8, 10),
-    Test(150, 100, 1000, 150),
-    Test(1500, 100, 10, 1050000),
-]
+Test = namedtuple("Test", ["n", "from_base", "to_base", "expected"])
 
 
 def convert(n: int, from_base: int, to_base: int) -> int:
@@ -31,7 +15,16 @@ def convert(n: int, from_base: int, to_base: int) -> int:
 
 
 if __name__ == "__main__":
-    for test in Tests:
-        result = convert(test.n, test.from_base, test.to_base)
+    tests = [
+        Test(32, 16, 10, 50),
+        Test(32, 20, 10, 62),
+        Test(1010, 2, 10, 10),
+        Test(8, 10, 8, 10),
+        Test(150, 100, 1000, 150),
+        Test(1500, 100, 10, 1050000),
+    ]
+
+    for test in tests:
+        result = convert(*test[:-1])
         assert result == test.expected, f"{test=}, {result=}"
     print("PASSED!!!")
