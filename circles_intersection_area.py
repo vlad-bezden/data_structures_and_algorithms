@@ -45,7 +45,6 @@ def find_intersection(c1: Circle, c2: Circle) -> float:
     elif angle1 < -1 or angle2 < -1:
         # Smaller circle is completely inside the largest circle.
         # Intersection area will be area of smaller circle
-        # return area(c1_r), area(c2_r)
         return math.pi * min(c1.r, c2.r) ** 2
     return 0
 
