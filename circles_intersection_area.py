@@ -33,8 +33,8 @@ def find_intersection(c1: Circle, c2: Circle) -> float:
     angle1 = (rad1sqr + d ** 2 - rad2sqr) / (2 * c1.r * d)
     angle2 = (rad2sqr + d ** 2 - rad1sqr) / (2 * c2.r * d)
 
-    # check if the circles are overlapping
-    if (-1 <= angle1 < 1) or (-1 <= angle2 < 1):
+    if -1 <= angle1 < 1 or -1 <= angle2 < 1:
+        # two circles are overlapping
         theta1 = math.acos(angle1) * 2
         theta2 = math.acos(angle2) * 2
 
