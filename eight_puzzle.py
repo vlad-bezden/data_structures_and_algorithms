@@ -25,7 +25,7 @@
 from __future__ import annotations
 from heapq import heappush, heappop
 from copy import deepcopy
-from typing import List, Tuple, Dict
+from typing import List, Tuple, Dict, Optional
 
 Puzzle = List[List[int]]
 Coordinate = Tuple[int, int]
@@ -60,7 +60,9 @@ def get_moves(node: Node) -> List[Node]:
 class Node:
     """Current state representation of the board and it's value"""
 
-    def __init__(self, parent: Node, state: Puzzle, path: str, cost: int) -> None:
+    def __init__(
+        self, parent: Optional[Node], state: Puzzle, path: str, cost: int
+    ) -> None:
         self.parent = parent
         self.state = state
         # g(n) - number of steps taken to the current state
@@ -97,7 +99,7 @@ class Node:
         """Returns cost + heuristic cost"""
         return self.cost + self.heuristic
 
-    def __lt__(self, other: "Node") -> bool:
+    def __lt__(self, other: Node) -> bool:
         return self._total_cost < other._total_cost
 
     def __repr__(self) -> str:
@@ -108,9 +110,8 @@ class Node:
         cost = self.cost
         heuristic = self.heuristic
         total_cost = self._total_cost
-        return (
-            f"{path=}, \n{cost=}, \n{heuristic=}, \n{total_cost=}, "
-            "\n{0}".format("\n".join(map(str, self.state)))
+        return f"{path=}, \n{cost=}, \n{heuristic=}, \n{total_cost=}, " "\n{0}".format(
+            "\n".join(map(str, self.state))
         )
 
 
@@ -132,7 +133,7 @@ class PriorityQueue:
         return repr(self._container)
 
 
-def a_star(initial: Puzzle) -> str:
+def a_star(initial: Puzzle) -> Node:
     to_visit = PriorityQueue()
     to_visit.push(Node(None, initial, "", 0))
     visited = []
@@ -152,7 +153,7 @@ def a_star(initial: Puzzle) -> str:
     raise Exception("Could not find solution")
 
 
-def print_states(node):
+def print_states(node: Optional[Node]) -> None:
     stack = []
     print("\nSolutions:")
     while node:
