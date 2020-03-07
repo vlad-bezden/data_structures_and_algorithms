@@ -108,8 +108,9 @@ class Node:
         cost = self.cost
         heuristic = self.heuristic
         total_cost = self._total_cost
-        return f"{path=}, \n{cost=}, \n{heuristic=}, \n{total_cost=}, \n" + "\n".join(
-            map(str, self.state)
+        return (
+            f"{path=}, \n{cost=}, \n{heuristic=}, \n{total_cost=}, "
+            "\n{0}".format("\n".join(map(str, self.state)))
         )
 
 
