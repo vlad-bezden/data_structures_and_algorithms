@@ -73,9 +73,8 @@ def is_balanced_2(expression: str) -> bool:
     """Check for pairs instead of individual char and if they exist delete from expr."""
     brackets = set(["()", "[]", "{}"])
 
-    while (brs := {br for br in brackets if br in expression}) :
-        for br in brs:
-            expression = expression.replace(br, "")
+    while (brs := [br for br in brackets if br in expression]):
+        expression = expression.replace(brs[0], "")
     return not expression
 
 
