@@ -14,12 +14,11 @@ from typing import Sequence
 
 
 def find_items(items: Sequence[int]) -> Sequence[int]:
-    result = []
-    for item in items:
-        if (idx := bisect_left(items, item)) < len(items) and items[idx] == item:
-            result.append(item)
-
-    return result
+    return [
+        i
+        for i in items
+        if (idx := bisect_left(items, i)) < len(items) and items[idx] == i
+    ]
 
 
 if __name__ == "__main__":
