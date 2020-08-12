@@ -26,7 +26,7 @@ def graph_to_matrix(graph: Graph) -> Matrix:
     matrix_elements = sorted(graph)
     rows = len(matrix_elements)
     # allocate matrix size [row x row] with 0
-    matrix = [[0] * rows for r in range(rows)]
+    matrix = [[0] * rows for _ in range(rows)]
 
     for i, row in enumerate(matrix_elements):
         for j, col in enumerate(matrix_elements):
