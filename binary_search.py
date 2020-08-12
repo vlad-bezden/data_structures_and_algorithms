@@ -1,10 +1,12 @@
 import random
+from typing import List
+
 
 data = sorted(random.sample(range(0, 50), 20))
 item = random.randint(0, 20)
 
 
-def binary_search(data, item):
+def binary_search(data:List[int], item:int):
     first = 0
     last = len(data) - 1
     found = False
