@@ -1,3 +1,5 @@
+numpy
+
 black
 flake8
 mypy
