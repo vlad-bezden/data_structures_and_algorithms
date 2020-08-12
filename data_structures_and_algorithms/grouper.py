@@ -2,10 +2,10 @@
 Groups list of items in tuples of size n
 """
 
-from typing import List, Any, Tuple
+from typing import Iterable, Any, Tuple
 
 
-def grouper(data: List[Any], n: int) -> Tuple[Any]:
+def grouper(data: Iterable[Any], n: int) -> Iterable[Tuple[Any]]:
     iters = [iter(data)] * n
     return zip(*iters)
 
