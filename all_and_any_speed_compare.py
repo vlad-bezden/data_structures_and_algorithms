@@ -11,13 +11,14 @@
 import math
 from timeit import timeit
 from time import time
+from typing import Callable
 
 
-def is_prime_any(n: int) -> bool:
+def is_prime_any(n: int) -> Callable[[int], bool]:
     return lambda n: not any(n % p == 0 for p in range(2, int(math.sqrt(n)) + 1))
 
 
-def is_prime_all(n: int) -> bool:
+def is_prime_all(n: int) -> Callable[[int], bool]:
     return lambda n: all(n % p != 0 for p in range(2, int(math.sqrt(n)) + 1))
 
 
