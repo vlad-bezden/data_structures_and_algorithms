@@ -4,14 +4,15 @@ from math import sqrt
 from typing import Generator
 
 
-def gen(max_val: int) -> Generator[int, None, None]:
+def gen(num: int) -> Generator[int, None, None]:
+    if 2 <= num:
+        yield 2
     yield from (
         i
-        for i in range(2, max_val)
-        if all(i % x != 0 for x in range(2, int(sqrt(i) + 1)))
+        for i in range(3, num + 1, 2)
+        if all(i % x != 0 for x in range(3, int(sqrt(i) + 1)))
     )
 
 
-if __name__ == "__main__":
-    for x in gen(600):
-        print(x, end=", ")
+for x in gen(600):
+    print(x, end=", ")
