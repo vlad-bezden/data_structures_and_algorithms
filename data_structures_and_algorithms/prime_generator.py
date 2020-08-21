@@ -4,6 +4,15 @@ from math import sqrt
 from typing import Generator
 
 
+def sieve_prime_gen(num: int) -> Generator[int, None, None]:
+    """Based on Sieve algorithm."""
+    candidates = [*range(2, num + 1)]
+
+    while candidates and (candidate := candidates[0]):
+        yield candidate
+        candidates = [n for n in candidates if n % candidate != 0]
+
+
 def classical_prime_gen(num: int) -> Generator[int, None, None]:
     """Classical prime generator."""
     if 2 <= num:
@@ -15,5 +24,7 @@ def classical_prime_gen(num: int) -> Generator[int, None, None]:
     )
 
 
-for x in classical_prime_gen(1000):
-    print(x, end=", ")
+for func in [classical_prime_gen, sieve_prime_gen]:
+    print(f"\n{func.__name__}")
+    for x in func(1000):
+        print(x, end=", ")
