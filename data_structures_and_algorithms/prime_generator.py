@@ -4,7 +4,8 @@ from math import sqrt
 from typing import Generator
 
 
-def gen(num: int) -> Generator[int, None, None]:
+def classical_prime_gen(num: int) -> Generator[int, None, None]:
+    """Classical prime generator."""
     if 2 <= num:
         yield 2
     yield from (
@@ -14,5 +15,5 @@ def gen(num: int) -> Generator[int, None, None]:
     )
 
 
-for x in gen(600):
+for x in classical_prime_gen(1000):
     print(x, end=", ")
