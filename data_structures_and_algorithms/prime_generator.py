@@ -1,7 +1,27 @@
-"""Generates prime numbers up to the specified number."""
+"""Generates prime numbers up to the specified number.
+
+    Output:
+
+    classical_prime_gen(1000). Exec time = 0.002481 sec
+    sieve_prime_gen(1000). Exec time = 0.002761 sec
+
+    classical_prime_gen(100000). Exec time = 0.002602 sec
+    sieve_prime_gen(100000). Exec time = 0.002768 sec
+"""
 
 from math import sqrt
-from typing import Generator
+from typing import Callable, Generator, Sequence
+from timeit import repeat
+from dataclasses import dataclass
+
+
+@dataclass
+class Test:
+    data: int
+    expected: int
+
+
+TESTS = [Test(1_000, 168), Test(100_000, 9592)]
 
 
 def sieve_prime_gen(num: int) -> Generator[int, None, None]:
@@ -24,7 +44,21 @@ def classical_prime_gen(num: int) -> Generator[int, None, None]:
     )
 
 
-for func in [classical_prime_gen, sieve_prime_gen]:
-    print(f"\n{func.__name__}")
-    for x in func(1000):
-        print(x, end=", ")
+def validate(funcs: Sequence[Callable[[int], Generator[int, None, None]]]) -> None:
+    for test in TESTS:
+        for f in funcs:
+            result = list(f(test.data))
+            assert len(result) == test.expected, f"{f.__name__}({test}), {result = }"
+    print("PASSED!!!\n")
+
+
+if __name__ == "__main__":
+    funcs = [classical_prime_gen, sieve_prime_gen]
+    validate(funcs)
+    for test in TESTS:
+        for f in funcs:
+            t = repeat(
+                stmt=f"f({test.data})", repeat=10, number=10_000, globals=globals()
+            )
+            print(f"{f.__name__}({test.data}). Exec time = {min(t):.6f} sec")
+        print()
