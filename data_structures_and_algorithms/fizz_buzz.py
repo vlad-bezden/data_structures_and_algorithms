@@ -6,6 +6,18 @@
 """
 
 from math import gcd
+from timeit import repeat
+from dataclasses import dataclass
+from typing import Callable, Sequence
+
+
+@dataclass
+class Test:
+    data: int
+    expected: str
+
+
+TESTS = [Test(3_003, "fizz"), Test(5_005, "buzz"), Test(15_000, "fizzbuzz")]
 
 
 def fizz_buzz_gcd(n: int) -> str:
@@ -47,7 +59,6 @@ def fizz_buzz_euclid(n: int) -> str:
     hi, lo = max(n, 15), min(n, 15)
     while 0 < (r := hi % lo):
         hi, lo = lo, r
-
     return {1: str(n), 3: "fizz", 5: "buzz", 15: "fizzbuzz"}[lo]
 
 
@@ -62,14 +73,33 @@ def fizz_buzz_classic(n: int) -> str:
     return str(n)
 
 
+def validate(funcs: Sequence[Callable[[int], str]]) -> None:
+    for test in TESTS:
+        for f in funcs:
+            result = f(test.data)
+            assert result == test.expected, f"{f.__name__}({test.data}), {result = }"
+
+    for i in range(1, 1_000):
+        assert 1 == len({f(i) for f in funcs})
+    print("PASSED!!!\n")
+
+
 if __name__ == "__main__":
-    for i in range(1, 101):
-        assert (
-            fizz_buzz_classic(i)
-            == fizz_buzz_one_line(i)
-            == fizz_buzz_dict(i)
-            == fizz_buzz_cycle(i)
-            == fizz_buzz_euclid(i)
-            == fizz_buzz_gcd(i)
-        )
-    print("PASSED!!!")
+    funcs = [
+        fizz_buzz_classic,
+        fizz_buzz_one_line,
+        fizz_buzz_dict,
+        fizz_buzz_cycle,
+        fizz_buzz_euclid,
+    ]
+    validate(funcs)
+    for test in TESTS:
+        for f in funcs:
+            t = repeat(
+                stmt=f"f({test.data})",
+                repeat=5,
+                number=100_000,
+                globals=globals(),
+            )
+            print(f"{f.__name__}({test.data}). Exec time = {min(t):.4f} sec")
+        print()
