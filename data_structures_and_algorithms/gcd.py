@@ -3,7 +3,6 @@
 
 def gcd(a: int, b: int) -> int:
     """GCD using recursion."""
-
     if b == 0:
         return a
     return gcd(b, a % b)
@@ -11,10 +10,10 @@ def gcd(a: int, b: int) -> int:
 
 def gcd2(a: int, b: int) -> int:
     """GCD using loop."""
-
-    while b:
-        a, b = b, a % b
-    return a
+    a, b = max(a, b), min(a, b)
+    while d := a % b:
+        a, b = b, d
+    return b
 
 
 if __name__ == "__main__":
@@ -27,4 +26,4 @@ if __name__ == "__main__":
         assert func(10, 9) == 1, "10/9"
         assert func(270, 192) == 6, "270/192"
 
-    print("tests passed")
+    print("PASSED!!!")
