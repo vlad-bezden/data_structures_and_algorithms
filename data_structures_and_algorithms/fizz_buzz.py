@@ -5,26 +5,50 @@
     https://leanpub.com/fizzbuzz
 """
 
-from typing import Callable
+from math import gcd
 
 
-by3: Callable[[int], bool] = lambda n: n % 3 == 0
-by5: Callable[[int], bool] = lambda n: n % 5 == 0
+def fizz_buzz_gcd(n: int) -> str:
+    """Using math.gcd function."""
+    return {1: str(n), 3: "fizz", 5: "buzz", 15: "fizzbuzz"}[gcd(n, 15)]
 
 
-def fizz_buzz(n: int) -> str:
+def fizz_buzz_one_line(n: int) -> str:
     """One liner solution."""
     return ("fizzbuzz", "buzz", "fizz", str(n))[(n % 15, n % 5, n % 3, 0).index(0)]
 
 
-def fizz_buzz_functional(n: int) -> str:
+def fizz_buzz_dict(n: int) -> str:
     """Classsic example by using functions for check."""
     return {
         (True, True): "fizzbuzz",
         (True, False): "fizz",
         (False, True): "buzz",
         (False, False): str(n),
-    }[by3(n), by5(n)]
+    }[n % 3 == 0, n % 5 == 0]
+
+
+def fizz_buzz_cycle(n: int) -> str:
+    """Using modulo for cycling."""
+    DICT_OF_15 = {
+        3: "fizz",
+        6: "fizz",
+        9: "fizz",
+        12: "fizz",
+        5: "buzz",
+        10: "buzz",
+        0: "fizzbuzz",
+    }
+    return DICT_OF_15.get(n % 15, str(n))
+
+
+def fizz_buzz_euclid(n: int) -> str:
+    """Based on Euclid's solution."""
+    hi, lo = max(n, 15), min(n, 15)
+    while 0 < (r := hi % lo):
+        hi, lo = lo, r
+
+    return {1: str(n), 3: "fizz", 5: "buzz", 15: "fizzbuzz"}[lo]
 
 
 def fizz_buzz_classic(n: int) -> str:
@@ -40,5 +64,12 @@ def fizz_buzz_classic(n: int) -> str:
 
 if __name__ == "__main__":
     for i in range(1, 101):
-        assert fizz_buzz_classic(i) == fizz_buzz(i) == fizz_buzz_functional(i)
+        assert (
+            fizz_buzz_classic(i)
+            == fizz_buzz_one_line(i)
+            == fizz_buzz_dict(i)
+            == fizz_buzz_cycle(i)
+            == fizz_buzz_euclid(i)
+            == fizz_buzz_gcd(i)
+        )
     print("PASSED!!!")
