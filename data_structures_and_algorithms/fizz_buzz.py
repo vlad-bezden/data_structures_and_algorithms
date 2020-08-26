@@ -3,12 +3,36 @@
     All examples are inspired or provided by "Ten Essays on Fizz Buzz"
     book by Joel Grus
     https://leanpub.com/fizzbuzz
+
+
+    Outputs:
+    fizz_buzz_classic(3003). Exec time = 0.0022 sec
+    fizz_buzz_one_line(3003). Exec time = 0.0066 sec
+    fizz_buzz_dict(3003). Exec time = 0.0077 sec
+    fizz_buzz_cycle(3003). Exec time = 0.0071 sec
+    fizz_buzz_euclid(3003). Exec time = 0.0115 sec
+    fizz_buzz_iterables(3003). Exec time = 11.8436 sec
+
+    fizz_buzz_classic(5005). Exec time = 0.0038 sec
+    fizz_buzz_one_line(5005). Exec time = 0.0065 sec
+    fizz_buzz_dict(5005). Exec time = 0.0076 sec
+    fizz_buzz_cycle(5005). Exec time = 0.0071 sec
+    fizz_buzz_euclid(5005). Exec time = 0.0121 sec
+    fizz_buzz_iterables(5005). Exec time = 19.8997 sec
+
+    fizz_buzz_classic(15000). Exec time = 0.0017 sec
+    fizz_buzz_one_line(15000). Exec time = 0.0061 sec
+    fizz_buzz_dict(15000). Exec time = 0.0074 sec
+    fizz_buzz_cycle(15000). Exec time = 0.0071 sec
+    fizz_buzz_euclid(15000). Exec time = 0.0096 sec
+    fizz_buzz_iterables(15000). Exec time = 59.6678 sec
 """
 
 from math import gcd
 from timeit import repeat
 from dataclasses import dataclass
 from typing import Callable, Sequence
+from itertools import cycle, count
 
 
 @dataclass
@@ -18,6 +42,17 @@ class Test:
 
 
 TESTS = [Test(3_003, "fizz"), Test(5_005, "buzz"), Test(15_000, "fizzbuzz")]
+
+
+def fizz_buzz_iterables(n: int) -> str:
+    """Using itertools cycle function."""
+    fizz_buzz = (
+        (fizz + buzz) or str(i)
+        for i, fizz, buzz in zip(
+            count(1), cycle(["", "", "fizz"]), cycle(["", "", "", "", "buzz"])
+        )
+    )
+    return [next(fizz_buzz) for _ in range(n)][-1]
 
 
 def fizz_buzz_gcd(n: int) -> str:
@@ -91,15 +126,13 @@ if __name__ == "__main__":
         fizz_buzz_dict,
         fizz_buzz_cycle,
         fizz_buzz_euclid,
+        fizz_buzz_iterables,
     ]
     validate(funcs)
     for test in TESTS:
         for f in funcs:
             t = repeat(
-                stmt=f"f({test.data})",
-                repeat=5,
-                number=100_000,
-                globals=globals(),
+                stmt=f"f({test.data})", repeat=3, number=10_000, globals=globals(),
             )
             print(f"{f.__name__}({test.data}). Exec time = {min(t):.4f} sec")
         print()
