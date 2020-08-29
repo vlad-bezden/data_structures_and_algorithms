@@ -6,33 +6,37 @@
 
 
     Outputs:
-    fizz_buzz_classic(3003). Exec time = 0.0022 sec
-    fizz_buzz_one_line(3003). Exec time = 0.0066 sec
-    fizz_buzz_dict(3003). Exec time = 0.0077 sec
-    fizz_buzz_cycle(3003). Exec time = 0.0071 sec
-    fizz_buzz_euclid(3003). Exec time = 0.0115 sec
-    fizz_buzz_iterables(3003). Exec time = 11.8436 sec
+    fizz_buzz_classic(303). Exec time = 0.0003 sec
+    fizz_buzz_one_line(303). Exec time = 0.0012 sec
+    fizz_buzz_dict(303). Exec time = 0.0016 sec
+    fizz_buzz_cycle(303). Exec time = 0.0014 sec
+    fizz_buzz_euclid(303). Exec time = 0.0019 sec
+    fizz_buzz_iterables(303). Exec time = 0.1371 sec
+    fizz_buzz_random(303). Exec time = 0.6533 sec
 
-    fizz_buzz_classic(5005). Exec time = 0.0038 sec
-    fizz_buzz_one_line(5005). Exec time = 0.0065 sec
-    fizz_buzz_dict(5005). Exec time = 0.0076 sec
-    fizz_buzz_cycle(5005). Exec time = 0.0071 sec
-    fizz_buzz_euclid(5005). Exec time = 0.0121 sec
-    fizz_buzz_iterables(5005). Exec time = 19.8997 sec
+    fizz_buzz_classic(505). Exec time = 0.0003 sec
+    fizz_buzz_one_line(505). Exec time = 0.0007 sec
+    fizz_buzz_dict(505). Exec time = 0.0008 sec
+    fizz_buzz_cycle(505). Exec time = 0.0014 sec
+    fizz_buzz_euclid(505). Exec time = 0.0022 sec
+    fizz_buzz_iterables(505). Exec time = 0.2697 sec
+    fizz_buzz_random(505). Exec time = 1.0847 sec
 
-    fizz_buzz_classic(15000). Exec time = 0.0017 sec
-    fizz_buzz_one_line(15000). Exec time = 0.0061 sec
-    fizz_buzz_dict(15000). Exec time = 0.0074 sec
-    fizz_buzz_cycle(15000). Exec time = 0.0071 sec
-    fizz_buzz_euclid(15000). Exec time = 0.0096 sec
-    fizz_buzz_iterables(15000). Exec time = 59.6678 sec
+    fizz_buzz_classic(555). Exec time = 0.0002 sec
+    fizz_buzz_one_line(555). Exec time = 0.0007 sec
+    fizz_buzz_dict(555). Exec time = 0.0008 sec
+    fizz_buzz_cycle(555). Exec time = 0.0007 sec
+    fizz_buzz_euclid(555). Exec time = 0.0010 sec
+    fizz_buzz_iterables(555). Exec time = 0.2494 sec
+    fizz_buzz_random(555). Exec time = 1.2257 sec
 """
 
 from math import gcd
 from timeit import repeat
 from dataclasses import dataclass
-from typing import Callable, Sequence
+from typing import Callable, Iterator, Sequence
 from itertools import cycle, count
+from random import seed, choice
 
 
 @dataclass
@@ -41,18 +45,58 @@ class Test:
     expected: str
 
 
-TESTS = [Test(3_003, "fizz"), Test(5_005, "buzz"), Test(15_000, "fizzbuzz")]
+TESTS = [
+    Test(1, "1"),
+    Test(2, "2"),
+    Test(3, "fizz"),
+    Test(4, "4"),
+    Test(5, "buzz"),
+    Test(6, "fizz"),
+    Test(7, "7"),
+    Test(8, "8"),
+    Test(9, "fizz"),
+    Test(10, "buzz"),
+    Test(11, "11"),
+    Test(12, "fizz"),
+    Test(13, "13"),
+    Test(14, "14"),
+    Test(15, "fizzbuzz"),
+    Test(303, "fizz"),
+    Test(505, "buzz"),
+    Test(555, "fizzbuzz"),
+]
+
+
+def fizz_buzz_random(n: int) -> str:
+    """Using random module for generating pseudo-random numbers. Very slow."""
+    result: str = ""
+
+    def gen() -> Iterator[str]:
+        counts = [count(1)] * 15
+        for group in zip(*counts):
+            seed(23_977_775)
+            for n in group:
+                # Just pick at random
+                yield choice(["fizzbuzz", "fizz", str(n), "buzz"])
+
+    fizz_buzz = gen()
+    for _ in range(n):
+        result = next(fizz_buzz)
+    return result
 
 
 def fizz_buzz_iterables(n: int) -> str:
-    """Using itertools cycle function."""
+    """Using itertools cycle function. Very slow."""
+    result = ""
     fizz_buzz = (
         (fizz + buzz) or str(i)
         for i, fizz, buzz in zip(
             count(1), cycle(["", "", "fizz"]), cycle(["", "", "", "", "buzz"])
         )
     )
-    return [next(fizz_buzz) for _ in range(n)][-1]
+    for _ in range(n):
+        result = next(fizz_buzz)
+    return result
 
 
 def fizz_buzz_gcd(n: int) -> str:
@@ -127,12 +171,13 @@ if __name__ == "__main__":
         fizz_buzz_cycle,
         fizz_buzz_euclid,
         fizz_buzz_iterables,
+        fizz_buzz_random,
     ]
     validate(funcs)
-    for test in TESTS:
+    for test in TESTS[-3:]:
         for f in funcs:
             t = repeat(
-                stmt=f"f({test.data})", repeat=3, number=10_000, globals=globals(),
+                stmt=f"f({test.data})", repeat=3, number=1_000, globals=globals(),
             )
             print(f"{f.__name__}({test.data}). Exec time = {min(t):.4f} sec")
         print()
