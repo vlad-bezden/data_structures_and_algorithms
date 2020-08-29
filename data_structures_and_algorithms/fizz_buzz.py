@@ -33,14 +33,12 @@
 
 from math import gcd
 from timeit import repeat
-from dataclasses import dataclass
-from typing import Callable, Iterator, Sequence
+from typing import Callable, Iterator, NamedTuple, Sequence
 from itertools import cycle, count
 from random import seed, choice
 
 
-@dataclass
-class Test:
+class Test(NamedTuple):
     data: int
     expected: str
 
