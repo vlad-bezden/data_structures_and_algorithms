@@ -36,6 +36,7 @@ from timeit import repeat
 from typing import Callable, Iterator, NamedTuple, Sequence
 from itertools import cycle, count
 from random import seed, choice
+import numpy as np
 
 
 class Test(NamedTuple):
@@ -63,6 +64,13 @@ TESTS = [
     Test(505, "buzz"),
     Test(555, "fizzbuzz"),
 ]
+
+
+def fizz_buzz_matrix(n: int) -> str:
+    """Using matrix multiplication."""
+    w = np.array([[1, 0, 0], [2, -2, 0], [2, 0, -2], [3, -3, -3]])
+    v = np.array([1, n % 3, n % 5])
+    return [str(n), "fizz", "buzz", "fizzbuzz"][np.argmax(w @ v)]
 
 
 def fizz_buzz_random(n: int) -> str:
@@ -170,6 +178,7 @@ if __name__ == "__main__":
         fizz_buzz_euclid,
         fizz_buzz_iterables,
         fizz_buzz_random,
+        fizz_buzz_matrix,
     ]
     validate(funcs)
     for test in TESTS[-3:]:
